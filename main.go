@@ -1,15 +1,14 @@
 package main
 
 import (
-	"./vendinMachine"
+	"github.com/SAD-A2/machine"
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
-var db = make(map[string]string)
-
 func setupRouter() *gin.Engine {
+  // Init database
+  machine.InitDb()
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 	r := gin.Default()
@@ -20,16 +19,16 @@ func setupRouter() *gin.Engine {
 	})
 
   // Ping test
-	r.GET("/db", func(c *gin.Context) {
-    result, err := test_connection()
-    if err != nil {
-      panic(err)
+	r.GET("/db_test", func(c *gin.Context) {
+    if err := machine.DB.Ping(); err != nil {
+      c.String(http.StatusOK, "Failed")
+    } else {
+  		c.String(http.StatusOK, "Successed")
     }
-		c.String(http.StatusOK, result)
 	})
 
 	r.GET("/machine_test", func(c *gin.Context) {
-		m := vendingMachine.VendingMachine {
+		m := machine.VendingMachine {
 			Name: "Sam",
 		}
 		result := m.Display()
