@@ -12,6 +12,7 @@ func setupRouter() *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 	r := gin.Default()
+	r.LoadHTMLGlob("views/*")
 
 	// Ping test
 	r.GET("/ping", func(c *gin.Context) {
@@ -76,6 +77,19 @@ func setupRouter() *gin.Engine {
 		c.String(http.StatusOK, strconv.Itoa( m.CheckBalance()))
 	})
 
+	/* vendingMachine INDEX */
+	r.GET("/", func(c *gin.Context) {
+		m := machine.GetWallet();
+		balance := m.CheckBalance()
+		c.HTML(http.StatusOK, "machineInterface.html", 
+			gin.H{
+				"title": "CSIM Vending Machine",
+				"balance": balance,
+			},
+		)
+	})
+
+
 	return r
 }
 
@@ -83,7 +97,7 @@ func main() {
 	// Init database
 	machine.InitDb()
 	// Init vendingMachine
-	machine.NewWallet("CSIM Wallet")
+	machine.NewWallet()
 
 	r := setupRouter()
 	// Listen and Server in 0.0.0.0:8080

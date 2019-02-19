@@ -1,12 +1,10 @@
 package machine
 
 import (
-    "fmt"
 	"sync"
 )
 
 type wallet struct {
-    name   string
     balance  int
     // LastName    string
     // TotalLeaves int
@@ -30,10 +28,9 @@ var (
 // 	return instance
 // }
 /* The suggested way from https://stackoverflow.com/questions/1823286/singleton-in-go */
-func NewWallet(name string) *wallet {
+func NewWallet() *wallet {
     once.Do(func() {
         instance = &wallet{
-            name: name,
             balance: 0,
         }
     })
@@ -42,11 +39,6 @@ func NewWallet(name string) *wallet {
 
 func GetWallet() *wallet{
     return instance
-}
-
-
-func (m *wallet) Display() string {
-	return fmt.Sprintf("Wallet name is '%s'", m.name)
 }
 
 /* checkBalance */

@@ -1,0 +1,13 @@
+<html>
+  <h1>
+    {{ .title }}
+  </h1>
+  <div>
+    <H1>BALANCE:<span>{{ .balance }}</span></H1>
+  </div>
+  <ul>
+    {{range .List}}
+    <li>{{.ID}}</li>
+    {{end}}
+  </ul>
+</html>

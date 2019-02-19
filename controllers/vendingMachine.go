@@ -1,20 +1,22 @@
 package controllers
 
 import (
-	"github.com/SAD-A2/machine"
+	// "github.com/SAD-A2/machine"
     // "fmt"
 )
 
 type VendingMachine struct {
-	Machine   machine.VendingMachine
+	Name: "CSIM Vending Machine"
 }
 
-// GET /vendingMachine/Index
-func (controller VendingMachine) Index() string{
-	return "Your index"
+// Constructor
+func NewVendingMachine() *vendingMachine {
+    m := new(vendingMachine)
+    return m
 }
-// GET /vendingMachine/Name
-func (controller VendingMachine) Name() string{
-	result := controller.Machine.Display()
-	return result
+
+// GET /VendingMachine/Index
+func (controller vendingMachine) Index() VendingMachine{
+	data{balance: machine.wallet.CheckBalance()}
+	return data
 }
