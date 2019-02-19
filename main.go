@@ -44,6 +44,17 @@ func setupRouter() *gin.Engine {
 		c.String(http.StatusOK, result)
 	})
 
+	// Controller Test
+	r.GET("/vendingMachine/name", func(c *gin.Context) {
+		m := machine.VendingMachine {
+			Name: "Sam Ja",
+		}
+		controller := controllers.VendingMachine{
+			Machine: m,
+		}
+		result := controller.Name()
+		c.String(http.StatusOK, result)
+	})
 
 	return r
 }
