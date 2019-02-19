@@ -5,8 +5,8 @@ import (
 	"sync"
 )
 
-type VendingMachine struct {
-    Name   string
+type vendingMachine struct {
+    name   string
     count  int
     // LastName    string
     // TotalLeaves int
@@ -15,25 +15,41 @@ type VendingMachine struct {
 
 var (
     once sync.Once
-    instance VendingMachine
+    instance *vendingMachine
 )
 
 // constructor
-func NewMachine(name string) VendingMachine {
-	once.Do(func() {
-		instance = VendingMachine{
-            Name: name, 
+/* The suggested way from https://github.com/tmrts/go-patterns/blob/master/creational/singleton.md */
+// func NewMachine(name string) vendingMachine {
+// 	once.Do(func() {
+// 		instance = vendingMachine{
+//             Name: name, 
+//             count: 0,
+//         }
+//     })
+// 	return instance
+// }
+/* The suggested way from https://stackoverflow.com/questions/1823286/singleton-in-go */
+func NewMachine(name string) *vendingMachine {
+    once.Do(func() {
+        instance = &vendingMachine{
+            name: name,
             count: 0,
         }
     })
-	return instance
+    return instance
 }
 
-func (m VendingMachine) Display() string {
-	return fmt.Sprintf("Machine '%s'", m.Name)
+func GetMachine() *vendingMachine{
+    return instance
 }
 
-func (m VendingMachine) Count() int {
+
+func (m *vendingMachine) Display() string {
+	return fmt.Sprintf("Machine '%s'", m.name)
+}
+
+func (m *vendingMachine) Count() int {
     m.count = m.count + 1
     return m.count
 }

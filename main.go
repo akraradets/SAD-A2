@@ -2,9 +2,10 @@ package main
 
 import (
 	"github.com/SAD-A2/machine"
-	"github.com/SAD-A2/controllers"
+	// "github.com/SAD-A2/controllers"
 	"net/http"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 func setupRouter() *gin.Engine {
@@ -26,32 +27,25 @@ func setupRouter() *gin.Engine {
     }
 	})
 
-	// Machine Test
-	r.GET("/machine_test", func(c *gin.Context) {
-		m := machine.VendingMachine {
-			Name: "Sam",
-		}
+	// vendingMachine Singleton
+	r.GET("/vending/name", func(c *gin.Context) {
+		m := machine.GetMachine();
+		if m == nil {
+			c.String(http.StatusOK, "No Vending Machine")
+			return
+		} 
 		result := m.Display()
 		c.String(http.StatusOK, result)
 	})
 
-	// Controller Test
-	r.GET("/vendingMachine/index", func(c *gin.Context) {
-		controller := controllers.VendingMachine{}
-		result := controller.Index()
-		c.String(http.StatusOK, result)
-	})
-
-	// Controller Test
-	r.GET("/vendingMachine/name", func(c *gin.Context) {
-		m := machine.VendingMachine {
-			Name: "Sam Ja",
-		}
-		controller := controllers.VendingMachine{
-			Machine: m,
-		}
-		result := controller.Name()
-		c.String(http.StatusOK, result)
+	r.GET("/vending/count", func(c *gin.Context) {
+		m := machine.GetMachine();
+		if m == nil {
+			c.String(http.StatusOK, "No Vending Machine")
+			return
+		} 
+		result := m.Count()
+		c.String(http.StatusOK, strconv.Itoa(result))
 	})
 
 	return r
@@ -61,7 +55,7 @@ func main() {
 	// Init database
 	machine.InitDb()
 	// Init vendingMachine
-	machine.NewMachine("SAM SMITH")
+	machine.NewMachine("CSIM Machine")
 
 	r := setupRouter()
 	// Listen and Server in 0.0.0.0:8080
