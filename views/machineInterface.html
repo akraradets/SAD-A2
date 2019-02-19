@@ -5,9 +5,35 @@
   <div>
     <H1>BALANCE:<span>{{ .balance }}</span></H1>
   </div>
+  <table style="width:auto; text-align:center;">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Buy?</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .items}}
+      <tr>
+        <td>{{.Id}}</td>
+        <td>{{.Name}}</td>
+        <td>{{.Amount}}</td>
+        <td>{{.Price}}</td>
+        <td>
+          {{if ge $.balance .Price }}
+          OK
+          {{else}}
+          Can not
+          {{end}}
+        </td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
   <ul>
-    {{range .List}}
-    <li>{{.ID}}</li>
-    {{end}}
+
   </ul>
 </html>

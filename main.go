@@ -80,11 +80,11 @@ func setupRouter() *gin.Engine {
 	/* vendingMachine INDEX */
 	r.GET("/", func(c *gin.Context) {
 		m := machine.GetWallet();
-		balance := m.CheckBalance()
 		c.HTML(http.StatusOK, "machineInterface.html", 
 			gin.H{
 				"title": "CSIM Vending Machine",
-				"balance": balance,
+				"balance": m.CheckBalance(),
+				"items": machine.ListItems(),
 			},
 		)
 	})
