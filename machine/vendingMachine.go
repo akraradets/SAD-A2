@@ -6,7 +6,7 @@ import (
 )
 
 type VendingMachine struct {
-    name   string
+    Name   string
     count  int
     // LastName    string
     // TotalLeaves int
@@ -19,11 +19,11 @@ var (
 )
 
 // constructor
-func New(name string) VendingMachine {
+func NewMachine(name string) VendingMachine {
 	once.Do(func() {
 		instance = VendingMachine{
-            name: name, 
-            count: 0
+            Name: name, 
+            count: 0,
         }
     })
 	return instance
@@ -33,7 +33,7 @@ func (m VendingMachine) Display() string {
 	return fmt.Sprintf("Machine '%s'", m.Name)
 }
 
-func (m VendingMachine) count() string {
+func (m VendingMachine) Count() int {
     m.count = m.count + 1
     return m.count
 }

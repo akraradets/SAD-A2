@@ -59,8 +59,9 @@ func setupRouter() *gin.Engine {
 
 func main() {
 	// Init database
-  machine.InitDb()
-
+	machine.InitDb()
+	// Init vendingMachine
+	machine.NewMachine("SAM SMITH")
 
 	r := setupRouter()
 	// Listen and Server in 0.0.0.0:8080
