@@ -1,9 +1,9 @@
 package machine
 
 import (
-  "database/sql"
   "fmt"
   _ "github.com/lib/pq"
+  "github.com/jmoiron/sqlx"
   "log"
 )
 
@@ -15,14 +15,14 @@ const (
   dbname   = "vendingDB"
 )
 
-var DB *sql.DB
+var DB *sqlx.DB
 
 func InitDb() {
   psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
     "password=%s dbname=%s sslmode=disable",
     host, port, user, password, dbname)
   var err error
-  DB, err = sql.Open("postgres", psqlInfo)
+  DB, err = sqlx.Connect("postgres", psqlInfo)
   if err != nil {
       log.Panic(err)
   }
