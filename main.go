@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,7 +20,10 @@ func setupRouter() *gin.Engine {
 
   // Ping test
 	r.GET("/db", func(c *gin.Context) {
-    result, err = test_connection()
+    result, err := test_connection()
+    if err != nil {
+      panic(err)
+    }
 		c.String(http.StatusOK, result)
 	})
 
