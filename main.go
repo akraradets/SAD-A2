@@ -8,8 +8,6 @@ import (
 )
 
 func setupRouter() *gin.Engine {
-  // Init database
-  machine.InitDb()
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 	r := gin.Default()
@@ -60,7 +58,10 @@ func setupRouter() *gin.Engine {
 }
 
 func main() {
-	
+	// Init database
+  machine.InitDb()
+
+
 	r := setupRouter()
 	// Listen and Server in 0.0.0.0:8080
 	r.Run(":8080")
