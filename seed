@@ -1,0 +1,7 @@
+CREATE TABLE items(
+ item_id serial PRIMARY KEY,
+ name VARCHAR (50) UNIQUE NOT NULL,
+ amount INT NOT NULL,
+ price INT NOT NULL
+);
+insert into items (name,amount,price) values('Coca-cola',10,16);
