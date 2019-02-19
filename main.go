@@ -80,17 +80,19 @@ func setupRouter() *gin.Engine {
 	/* vendingMachine INDEX */
 	r.GET("/", func(c *gin.Context) {
 		m := machine.GetWallet();
-		c.HTML(http.StatusOK, "machineInterface.html", 
-			gin.H{
+		renderHTML(c,gin.H{
 				"title": "CSIM Vending Machine",
 				"balance": m.CheckBalance(),
 				"items": machine.ListItems(),
-			},
-		)
+			})
 	})
 
 
 	return r
+}
+
+func renderHTML(c *gin.Context, data gin.H){
+	c.HTML(http.StatusOK, "machineInterface.html", data)
 }
 
 func main() {
