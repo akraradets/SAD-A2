@@ -3,7 +3,6 @@ package main
 import (
   "database/sql"
   "fmt"
-  "github.com/lib/pq"
   _ "github.com/lib/pq"
 )
 
@@ -11,7 +10,6 @@ const (
   host     = "localhost"
   port     = 5432
   user     = "vendingApp"
-  password = ""
   password = "vendingPassword"
   dbname   = "vendingDB"
 )
