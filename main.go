@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"strconv"
+	"log"
 )
 
 func setupRouter() *gin.Engine {
@@ -41,58 +42,43 @@ func setupRouter() *gin.Engine {
 	})
 
 
-	/* checkBalance */
-	r.GET("/balance", func(c *gin.Context) {
-		m := machine.GetWallet();
-		if m == nil {
-			c.String(http.StatusOK, "No Wallet")
-			return
-		} 
-		c.String(http.StatusOK, strconv.Itoa( m.CheckBalance()))
-	})
-	/* insertCoin */
-	r.GET("/balance/:amount", func(c *gin.Context) {
-		m := machine.GetWallet();
-		if m == nil {
-			c.String(http.StatusOK, "No Wallet")
-			return
-		} 
-		amount, err := strconv.Atoi(c.Param("amount"))
+	/* Insert Coint */
+	r.POST("/insertCoin", func(c *gin.Context) {
+		amount, err := strconv.Atoi(c.PostForm("coin"))
 		if err != nil {
+			log.Panic(err)
 			c.String(http.StatusOK, "fail to parse")
 			return
 		}
+		m := machine.GetWallet();
 		m.InsertCoin( amount )
-		c.String(http.StatusOK, strconv.Itoa( m.CheckBalance()))
+		renderHTML(c)
 	})
 
 	/* retriveCoin */
 	r.GET("/retrive", func(c *gin.Context) {
 		m := machine.GetWallet();
-		if m == nil {
-			c.String(http.StatusOK, "No Wallet")
-			return
-		} 
 		m.RetriveCoin()
-		c.String(http.StatusOK, strconv.Itoa( m.CheckBalance()))
+		renderHTML(c)
 	})
 
 	/* vendingMachine INDEX */
 	r.GET("/", func(c *gin.Context) {
-		m := machine.GetWallet();
-		renderHTML(c,gin.H{
-				"title": "CSIM Vending Machine",
-				"balance": m.CheckBalance(),
-				"items": machine.ListItems(),
-			})
+		renderHTML(c)
 	})
-
 
 	return r
 }
 
-func renderHTML(c *gin.Context, data gin.H){
-	c.HTML(http.StatusOK, "machineInterface.html", data)
+func renderHTML(c *gin.Context){
+	m := machine.GetWallet();
+	c.HTML(http.StatusOK, 
+		"machineInterface.html",
+		gin.H{
+			"balance": m.CheckBalance(),
+			"items": machine.ListItems(),
+		},
+	)
 }
 
 func main() {

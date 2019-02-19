@@ -1,10 +1,16 @@
 <html>
   <h1>
-    {{ .title }}
+    CSIM Vending Machine
   </h1>
   <div>
     <H1>BALANCE:<span>{{ .balance }}</span></H1>
   </div>
+  <form method="post" action="/insertCoin">
+    <label>Input Coin:</label>
+    <input type="text" class="form-control" name="coin" id="coin" placeholder="Enter Cash">
+    <button type="submit" class="btn btn-primary">Insert</button>
+  </form>
+  <a href="/retrive" type="a">Retrive Coin</a>
   <table style="width:auto; text-align:center;">
     <thead>
       <tr>
