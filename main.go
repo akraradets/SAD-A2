@@ -27,17 +27,6 @@ func setupRouter() *gin.Engine {
     }
 	})
 
-	// vendingMachine Singleton
-	r.GET("/vending/name", func(c *gin.Context) {
-		m := machine.GetMachine();
-		if m == nil {
-			c.String(http.StatusOK, "No Vending Machine")
-			return
-		} 
-		result := m.Display()
-		c.String(http.StatusOK, result)
-	})
-
 	r.GET("/items", func(c *gin.Context) {
 		items := machine.ListItems()
 		c.JSON(http.StatusOK, items)
@@ -50,15 +39,43 @@ func setupRouter() *gin.Engine {
 
 	})
 
-	r.GET("/vending/count", func(c *gin.Context) {
-		m := machine.GetMachine();
+
+	/* checkBalance */
+	r.GET("/balance", func(c *gin.Context) {
+		m := machine.GetWallet();
 		if m == nil {
-			c.String(http.StatusOK, "No Vending Machine")
+			c.String(http.StatusOK, "No Wallet")
 			return
 		} 
-		result := m.Count()
-		c.String(http.StatusOK, strconv.Itoa(result))
+		c.String(http.StatusOK, strconv.Itoa( m.CheckBalance()))
 	})
+	/* insertCoin */
+	r.GET("/balance/:amount", func(c *gin.Context) {
+		m := machine.GetWallet();
+		if m == nil {
+			c.String(http.StatusOK, "No Wallet")
+			return
+		} 
+		amount, err := strconv.Atoi(c.Param("amount"))
+		if err != nil {
+			c.String(http.StatusOK, "fail to parse")
+			return
+		}
+		m.InsertCoin( amount )
+		c.String(http.StatusOK, strconv.Itoa( m.CheckBalance()))
+	})
+
+	/* retriveCoin */
+	r.GET("/retrive", func(c *gin.Context) {
+		m := machine.GetWallet();
+		if m == nil {
+			c.String(http.StatusOK, "No Wallet")
+			return
+		} 
+		m.RetriveCoin()
+		c.String(http.StatusOK, strconv.Itoa( m.CheckBalance()))
+	})
+
 	return r
 }
 
@@ -66,7 +83,7 @@ func main() {
 	// Init database
 	machine.InitDb()
 	// Init vendingMachine
-	machine.NewMachine("CSIM Machine")
+	machine.NewWallet("CSIM Wallet")
 
 	r := setupRouter()
 	// Listen and Server in 0.0.0.0:8080
