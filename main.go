@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/SAD-A2/machine"
+	"github.com/SAD-A2/controllers"
 	"net/http"
 	"github.com/gin-gonic/gin"
 )
@@ -27,6 +28,7 @@ func setupRouter() *gin.Engine {
     }
 	})
 
+	// Machine Test
 	r.GET("/machine_test", func(c *gin.Context) {
 		m := machine.VendingMachine {
 			Name: "Sam",
@@ -34,6 +36,14 @@ func setupRouter() *gin.Engine {
 		result := m.Display()
 		c.String(http.StatusOK, result)
 	})
+
+	// Controller Test
+	r.GET("/vendingMachine/index", func(c *gin.Context) {
+		controller := controllers.VendingMachine{}
+		result := controller.Index()
+		c.String(http.StatusOK, result)
+	})
+
 
 	return r
 }
