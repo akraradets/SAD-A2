@@ -1,6 +1,7 @@
 package main
 
 import (
+	"./vendinMachine"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
