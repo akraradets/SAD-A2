@@ -35,6 +35,17 @@ func setupRouter() *gin.Engine {
 		c.String(http.StatusOK, result)
 	})
 
+	r.GET("/items", func(c *gin.Context) {
+		items := machine.ListItems()
+		c.JSON(http.StatusOK, items)
+	})
+
+	r.POST("/buy", func(c *gin.Context) {
+		name := c.Query("name")
+		amount := machine.BuyItems(name)
+		c.String(http.StatusOK, amount)
+
+	})
 	return r
 }
 
