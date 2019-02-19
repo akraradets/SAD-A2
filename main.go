@@ -27,6 +27,14 @@ func setupRouter() *gin.Engine {
 		c.String(http.StatusOK, result)
 	})
 
+	r.GET("/machine_test", func(c *gin.Context) {
+		m := vendingMachine.VendingMachine {
+			Name: "Sam",
+		}
+		result := m.Display()
+		c.String(http.StatusOK, result)
+	})
+
 	return r
 }
 

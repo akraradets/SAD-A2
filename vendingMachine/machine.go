@@ -12,6 +12,6 @@ type VendingMachine struct {
 }
 
 // constructor
-func (m VendingMachine) display() {  
-    fmt.Printf("Machine '%s'", m.Name)
+func (m VendingMachine) Display() string {
+	return fmt.Sprintf("Machine '%s'", m.Name)
 }
