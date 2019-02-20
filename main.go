@@ -29,15 +29,22 @@ func setupRouter() *gin.Engine {
     }
 	})
 
+	// List All item in DB.
 	r.GET("/items", func(c *gin.Context) {
 		items := machine.ListItems()
 		c.JSON(http.StatusOK, items)
 	})
 
-	r.POST("/buy", func(c *gin.Context) {
-		name := c.Query("name")
-		amount := machine.BuyItems(name)
-		c.String(http.StatusOK, amount)
+
+	r.POST("/pushButton/:name", func(c *gin.Context) {
+		name := c.Params.ByName("name")
+		pButton := machine.NewProxyButton(name)
+		err := pButton.Push()
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err)
+		} else {
+			c.String(http.StatusOK, "Successed")
+		}
 
 	})
 
@@ -72,7 +79,7 @@ func setupRouter() *gin.Engine {
 
 func renderHTML(c *gin.Context){
 	m := machine.GetWallet();
-	c.HTML(http.StatusOK, 
+	c.HTML(http.StatusOK,
 		"machineInterface.html",
 		gin.H{
 			"balance": m.CheckBalance(),
@@ -84,7 +91,7 @@ func renderHTML(c *gin.Context){
 func main() {
 	// Init database
 	machine.InitDb()
-	// Init vendingMachine
+	// Init singleton Wallet
 	machine.NewWallet()
 
 	r := setupRouter()
