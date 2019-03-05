@@ -36,7 +36,7 @@ func BuyItem(name string) error {
 	if err != nil {
 		return err
 	}
-
+	itemsCache[name] = item
   return nil
 }
 

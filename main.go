@@ -42,7 +42,7 @@ func setupRouter() *gin.Engine {
 		pButton := machine.NewProxyButton(name)
 		err := pButton.Push()
 		if err != nil {
-			c.JSON(http.StatusBadRequest, err)
+			c.String(http.StatusBadRequest, err.Error())
 		} else {
 			c.String(http.StatusOK, "Successed")
 		}
@@ -97,7 +97,7 @@ func main() {
 	// Init singleton Wallet
 	machine.NewWallet()
 	//scheduler to update database after every 5 minutes
-	scheduler.Every(5).Minutes().Run(machine.UpdateItems)
+	scheduler.Every(1).Minutes().Run(machine.UpdateItems)
 
 	r := setupRouter()
 	// Listen and Server in 0.0.0.0:8080
