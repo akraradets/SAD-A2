@@ -30,9 +30,6 @@ func LoadItems() {
   for _, item := range items {
     itemsCache[item.Name] = item
   }
-
-  log.Println(itemsCache["Coca-cola"].Name)
-  log.Println(itemsCache["Pringles"].Name)
 }
 
 func UpdateItems() {

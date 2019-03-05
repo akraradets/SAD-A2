@@ -42,9 +42,9 @@ func setupRouter() *gin.Engine {
 		pButton := machine.NewProxyButton(name)
 		err := pButton.Push()
 		if err != nil {
-			c.String(http.StatusBadRequest, err.Error())
+			renderHTML(c, err)
 		} else {
-			c.String(http.StatusOK, "Successed")
+			renderHTML(c, nil)
 		}
 
 	})
@@ -60,31 +60,36 @@ func setupRouter() *gin.Engine {
 		}
 		m := machine.GetWallet();
 		m.InsertCoin( amount )
-		renderHTML(c)
+		renderHTML(c, nil)
 	})
 
 	/* retriveCoin */
 	r.GET("/retrive", func(c *gin.Context) {
 		m := machine.GetWallet();
 		m.RetriveCoin()
-		renderHTML(c)
+		renderHTML(c, nil)
 	})
 
 	/* vendingMachine INDEX */
 	r.GET("/", func(c *gin.Context) {
-		renderHTML(c)
+		renderHTML(c, nil)
 	})
 
 	return r
 }
 
-func renderHTML(c *gin.Context){
+func renderHTML(c *gin.Context, err error){
 	m := machine.GetWallet();
+	errM := ""
+	if err != nil {
+		errM = err.Error()
+	}
 	c.HTML(http.StatusOK,
 		"machineInterface.html",
 		gin.H{
 			"balance": m.CheckBalance(),
 			"items": machine.ListItems(),
+			"error": errM,
 		},
 	)
 }

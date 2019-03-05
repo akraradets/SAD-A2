@@ -5,6 +5,9 @@
   <div>
     <H1>BALANCE:<span>{{ .balance }}</span></H1>
   </div>
+  <div>
+    <H3><span>{{ .error }}</span></H3>
+  </div>
   <form method="post" action="/insertCoin">
     <label>Input Coin:</label>
     <input type="text" class="form-control" name="coin" id="coin" placeholder="Enter Cash">
@@ -29,11 +32,9 @@
         <td>{{.Amount}}</td>
         <td>{{.Price}}</td>
         <td>
-          {{if ge $.balance .Price }}
-          OK
-          {{else}}
-          Can not
-          {{end}}
+          <form method="post" action="/pushButton/{{.Name}}">
+            <button type="submit" class="btn btn-primary">Push</button>
+          </form>
         </td>
       </tr>
       {{end}}
