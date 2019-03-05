@@ -8,7 +8,7 @@ import (
 )
 
 const (
-  host     = "172.17.0.3"
+  host     = "localhost"
   port     = 5432
   user     = "vendingApp"
   password = "vendingPassword"
