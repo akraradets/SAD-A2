@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"log"
+	"github.com/carlescere/scheduler"
 )
 
 func setupRouter() *gin.Engine {
@@ -91,8 +92,12 @@ func renderHTML(c *gin.Context){
 func main() {
 	// Init database
 	machine.InitDb()
+	// fetch items from database
+	machine.LoadItems()
 	// Init singleton Wallet
 	machine.NewWallet()
+	//scheduler to update database after every 5 minutes
+	scheduler.Every(5).Minutes().Run(machine.UpdateItems)
 
 	r := setupRouter()
 	// Listen and Server in 0.0.0.0:8080
