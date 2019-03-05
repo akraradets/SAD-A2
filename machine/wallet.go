@@ -2,6 +2,7 @@ package machine
 
 import (
 	"sync"
+  "errors"
 )
 
 type wallet struct {
@@ -21,7 +22,7 @@ var (
 // func NewWallet(name string) wallet {
 // 	once.Do(func() {
 // 		instance = wallet{
-//             Name: name, 
+//             Name: name,
 //             balance: 0,
 //         }
 //     })
@@ -45,6 +46,17 @@ func GetWallet() *wallet{
 func (m *wallet) CheckBalance() int {
     return m.balance
 }
+
+/* InsertCoin */
+func (m *wallet) subtractBalance(amount int) error {
+    if amount > m.balance {
+      return errors.New("The request exceeded current balance")
+    } else {
+      m.balance = m.balance - amount
+      return nil
+    }
+}
+
 /* InsertCoin */
 func (m *wallet) InsertCoin(coin int) {
     m.balance = m.balance + coin
