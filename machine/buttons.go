@@ -32,7 +32,7 @@ func (p *ProxyButton) Push() error {
     name := p.button.name
     currentBalance := m.CheckBalance()
     price := GetItemPrice(name)
-    if price < currentBalance {
+    if price > currentBalance {
       return errors.New("Not enough balance to buy the item.")
     }
     err := p.button.Push()
